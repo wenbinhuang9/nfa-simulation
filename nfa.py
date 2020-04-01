@@ -3,38 +3,6 @@ from collections import defaultdict
 
 EPSILON = "epsilon"
 
-def mergeOR(nfa_list):
-    redefine_nfa_list = [nfa_obj.redefine_states(str(i)) for i, nfa_obj in enumerate(nfa_list)]
-
-    nfa_obj = NFA().startState(0).acceptState(1).append(redefine_nfa_list)
-
-    for subnfa in redefine_nfa_list:
-        nfa_obj.addTransitions(nfa_obj.start, EPSILON, subnfa.start)
-        nfa_obj.addTransitions(subnfa.accept, EPSILON, nfa_obj.accept)
-
-    return nfa_obj
-
-def mergeConcatenation(nfa_list):
-    redefine_nfa_list = [nfa_obj.redefine_states(str(i)) for i, nfa_obj in enumerate(nfa_list)]
-
-    new_nfa = redefine_nfa_list[0].append(redefine_nfa_list[1:])
-    pre_nfa = new_nfa
-    for i in range(1, len(redefine_nfa_list)):
-        each_nfa = redefine_nfa_list[i]
-        new_nfa.addTransitions(pre_nfa.accept, EPSILON, each_nfa.start)
-
-        pre_nfa = each_nfa
-        if i == len(redefine_nfa_list) - 1:
-            new_nfa.accept = each_nfa.accept
-
-    return new_nfa
-
-def mergeStar(nfa):
-    nfa.addTransitions(nfa.accept, EPSILON, nfa.start)
-
-    return nfa
-
-
 # how to generate code according to NFA definition??? there should be some algorithms
 class NFA():
     def __init__(self):
