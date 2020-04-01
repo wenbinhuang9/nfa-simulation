@@ -50,34 +50,6 @@ class NFA():
     def isAcceptState(self, q):
         return  q in self.accept
 
-    def append(self, nfa_list):
-        for nfa in nfa_list:
-            self.__append_single(nfa)
-
-        return self
-
-    def __append_single(self, nfa):
-        self.transitions.update(nfa.transitions)
-        self.state_out.update(nfa.state_out)
-        self.states.update(nfa.states)
-
-        return self
-
-
-    def gen_new_state(self, c , state):
-        return c + state
-
-    def redefine_states(self, c):
-        nfa_obj = NFA().startState(self.gen_new_state(c, self.start)).acceptState(self.gen_new_state(c, self.accept))
-
-        for key,state_list in self.transitions.items():
-            state, symbol = key[0], key[1]
-            new_state = self.gen_new_state(c, state)
-            for s in state_list:
-                new_s = self.gen_new_state(c, s)
-                nfa_obj.addTransitions(new_state, symbol, new_s)
-
-        return nfa_obj
 
     def startState(self, start):
         if isinstance(start, int):
@@ -111,11 +83,6 @@ class NFA():
 
         return self
 
-
-    def curSymbol(self, q):
-        symbol_list =self.state_out[q]
-
-        return symbol_list[0]
 
     def nextState(self, q, s):
         next = self.transitions[(q, s)]
