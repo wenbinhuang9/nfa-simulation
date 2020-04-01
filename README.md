@@ -18,3 +18,12 @@ q1 1 q3
 q3 0 q4
 q4 1 q5
 ```
+
+# how to use
+
+```
+from simulation import getNFAStream, simulate
+
+getNFAStream("./nfa")
+simulate(nfa, "101")
+```
